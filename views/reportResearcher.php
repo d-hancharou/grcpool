@@ -6,7 +6,7 @@ $panelContent = '';
 if ($this->view->hosts) {
 	$panelContent .= '
 		<table class="table table-striped table-hover table-condensed">
-			<tr><th>Host</th><th>Hardware</th><th class="text-right">Mag</th></tr>
+			<tr><th>Host Name</th><th>Host</th><th>Hardware</th><th class="text-right">Mag</th></tr>
 	';
 	$magGrandTotal = 0;
 	foreach ($this->view->hosts as $host) {
@@ -16,9 +16,20 @@ if ($this->view->hosts) {
 				$magTotal += $credit->getMag();
 			}
 		}
+        $hostName = 'unknown';
+        if ($host->getCustomName() != '') {
+            $hostName = $host->getCustomName();
+        } else {
+            if ($host[0]->getHostName() != '') {
+                $hostName = $host->getHostName();
+            }
+        }
 		$magGrandTotal += $magTotal;
 		$panelContent .= '
 			<tr>
+				<td>
+				    <a href="/report/researcher/'.$host->getMemberId().'/'.$host->getId().'">'.$hostName.'</a>
+				</td>
 				<td>
 					<a href="/report/researcher/'.$host->getMemberId().'/'.$host->getId().'">'.$host->getOsName().' '.$host->getOsVersion().' '.$host->getProductName().'</a>
 				</td>
